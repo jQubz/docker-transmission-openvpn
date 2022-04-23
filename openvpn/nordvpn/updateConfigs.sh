@@ -79,7 +79,8 @@ select_hostname() { #TODO return multiples
         hostname=`curl -s "${nordvpn_api}/v1/servers/recommendations?limit=1" | jq --raw-output ".[].hostname"`
     fi
 
-    log "Best server : ${hostname}"
+    load=`curl --silent "${nordvpn_api}/server/stats/${hostname}" | jq .percent`
+    log "Best server : ${hostname}, load: ${load}"
     echo ${hostname}
 }
 download_hostname() {
